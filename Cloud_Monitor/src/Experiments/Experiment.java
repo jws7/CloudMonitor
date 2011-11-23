@@ -1,6 +1,6 @@
 package Experiments;
 /*
- * Copyright (C) 2009-2010 School of Computer Science, University of St Andrews. All rights reserved.
+ * Copyright (C) 2009-2011 School of Computer Science, University of St Andrews. All rights reserved.
  * Project Homepage: http://jws7.net/cloudmonitor
  *
  * CloudMonitor is free software: you can redistribute it and/or modify
