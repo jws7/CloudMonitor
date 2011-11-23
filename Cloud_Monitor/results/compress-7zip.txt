@@ -1,0 +1,1 @@
+[Experiment Runner] Avg watts used: 0.0

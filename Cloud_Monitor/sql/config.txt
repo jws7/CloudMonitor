@@ -1,0 +1,7 @@
+host
+monitor-user
+password
+
+// 1st line: DB Url
+// 2nd line: DB user
+// 3rd line: DB password
