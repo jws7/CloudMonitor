@@ -28,7 +28,12 @@ public class SNMPPoller {
 
 	private SSH2ConnectionWrapper ssh;
 
-	public SNMPPoller() {
+	public SNMPPoller(String device, String mib) {
+	
+		this.deviceIPAddress = device;
+
+		// TODO: In future might want to download MIB if not in expected place
+		this.mibPath = mib;
 
 		String host = "";
 		String user = "";
