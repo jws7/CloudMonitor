@@ -1,4 +1,3 @@
-package EnergyMonitor;
 /*
  * Copyright (C) 2009-2011 School of Computer Science, University of St Andrews. All rights reserved.
  * Project Homepage: http://jws7.net/cloudmonitor
@@ -16,6 +15,7 @@ package EnergyMonitor;
  * You should have received a copy of the GNU General Public License
  * along with CloudMonitor.  If not, see <http://www.gnu.org/licenses/>.
  */
+package EnergyMonitor;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
