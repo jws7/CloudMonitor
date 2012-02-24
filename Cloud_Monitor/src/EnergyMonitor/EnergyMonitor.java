@@ -18,7 +18,9 @@
 
 package EnergyMonitor;
 
+import java.io.File;
 import java.net.InetAddress;
+import java.util.Scanner;
 
 import Utilities.DatabaseConnection;
 
@@ -27,29 +29,20 @@ import uk.ac.standrews.cs.nds.util.SSH2ConnectionWrapper;
 public class EnergyMonitor extends Thread {
 
 	// Fields
-	private String PDU_IPAddress = "10.1.0.2"; // IP address of PDU
+	private String PDU_IPAddress = "138.251.198.6"; // IP address of PDU
 	private int socket; // Socket number to query
-	private SSH2ConnectionWrapper ssh; // SSH connection to controller -- hack
 	private DatabaseConnection db;	
 	private boolean debug = false;
-
-	
-	// Host SSH details
-	private String host = "localhost";
-	private String user = "snmp-user";
-	private String password = "snmp-user-password";
-	
 
 	/**
 	 * Constructor : IP of the PDU & Socket to query
 	 * 
-	 * @param ip
-	 * @param i
+	 * @param ip 
+	 * @param i = PDU Outlet to query (NODE20 = 5, NODE23 = 4) 
 	 */
 	public EnergyMonitor(String ip, int i, boolean d) {
 		this(i, d);
-		this.PDU_IPAddress = ip;
-		
+		this.PDU_IPAddress = ip;	
 	}
 
 	/**
@@ -61,15 +54,9 @@ public class EnergyMonitor extends Thread {
 		this.socket = i;
 		this.debug = d;
 		
-		try {
-			// Begin by getting a connection to this machine - hack
-			InetAddress host = InetAddress
-					.getByName(this.host);
-			this.ssh = new SSH2ConnectionWrapper(host, this.user, this.password);
-			System.out.println("Attempting to connect to: " + host.getHostAddress() + " with user: " + this.user +  " and password: " + this.password );
-			
+		try {		
 			//Set up DB
-			this.db = new DatabaseConnection();
+			this.db = new DatabaseConnection(d);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -85,7 +72,7 @@ public class EnergyMonitor extends Thread {
 			long start = System.currentTimeMillis();
 			
 			
-			EnergyMonitorPollerSSH emh = new EnergyMonitorPollerSSH(this.socket, this.debug, this.ssh, this.db);
+			EnergyMonitorPollerSSH emh = new EnergyMonitorPollerSSH(this.socket, this.debug, this.db);
 			emh.start();
 
 			long finish = System.currentTimeMillis();
@@ -119,8 +106,10 @@ public class EnergyMonitor extends Thread {
 	 */
 	public static void main(String[] args) {
 
+		int socket = Integer.parseInt(args[0]);
+		
 		// Create new monitor for socket and get Active Power
-		EnergyMonitor energy = new EnergyMonitor(1, false);
+		EnergyMonitor energy = new EnergyMonitor(socket, false);
 		energy.start();
 	}
 }

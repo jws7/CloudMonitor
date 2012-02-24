@@ -28,6 +28,13 @@ public class SNMPPoller {
 
 	private SSH2ConnectionWrapper ssh;
 
+	public static void main(String[] args){
+		
+		SNMPPoller poller = new SNMPPoller("138.251.198.6", "\"./MIB.txt\"");
+		System.out.println("Result = " + poller.snmpWalk("outletWattHours.5"));
+		
+	}
+	
 	public SNMPPoller(String device, String mib) {
 	
 		this.deviceIPAddress = device;
@@ -47,6 +54,7 @@ public class SNMPPoller {
 			host += sc.next();
 			user = sc.next();
 			passwd = sc.next();
+			System.out.println("Attempting to connect to " + host + " with user " + user + " and passwd " + passwd);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -71,6 +79,7 @@ public class SNMPPoller {
 		// append "." + socket number to query to snmp data outlet requested
 
 		// Execute snmp command
+		System.out.println("Executing: " + cmd);
 		return executeCommand(cmd);
 	}
 

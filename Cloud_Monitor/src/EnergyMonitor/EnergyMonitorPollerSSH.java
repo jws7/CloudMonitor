@@ -20,6 +20,7 @@ package EnergyMonitor;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -32,29 +33,26 @@ import uk.ac.standrews.cs.nds.util.*;
 public class EnergyMonitorPollerSSH extends Thread {
 
 	// Fields
-	private String PDU_IPAddress = "10.1.0.2"; // IP address of PDU
+	private String PDU_IPAddress = "138.251.198.6"; // IP address of PDU
 	private int socket; // Socket number to query
-	private SSH2ConnectionWrapper ssh; // SSH connection to controller -- hack
 	private EnergyMonitorData data;
-	private boolean debug = false;
-	private DatabaseConnection db;				 // Database Connection
-
+	private boolean debug = true;
+	private DatabaseConnection db; // Database Connection
 
 	/**
 	 * Second constructor, sets socket to use
 	 * 
 	 * @param i
 	 */
-	public EnergyMonitorPollerSSH(int i, boolean f, SSH2ConnectionWrapper s,  DatabaseConnection d) {
+	public EnergyMonitorPollerSSH(int i, boolean f,
+			DatabaseConnection d) {
 		this.socket = i;
-		this.ssh = s;
 		this.db = d;
 		this.debug = f;
-		
+
 		if (debug) {
 			System.out.println("Debug on");
-			System.out
-					.println("Version with time between SNMP Call & Setting up ByteInput");
+			System.out.println("Testing local running. Cleaned up version");
 		}
 
 		// Create data storage object
@@ -67,7 +65,8 @@ public class EnergyMonitorPollerSSH extends Thread {
 	 */
 	public void run() {
 
-			EnergyMonitorData e_data = getAllData();
+		EnergyMonitorData e_data = getAllData();
+		if (debug)
 			System.out.println(e_data);
 	}
 
@@ -79,8 +78,8 @@ public class EnergyMonitorPollerSSH extends Thread {
 	 * @return
 	 */
 	public EnergyMonitorData getAllData() {
-		
-		if(this.db == null){
+
+		if (this.db == null) {
 			System.err.println("Database is null");
 			System.exit(-1);
 		}
@@ -88,7 +87,7 @@ public class EnergyMonitorPollerSSH extends Thread {
 		try {
 			// Comment out this line to do update only
 			this.data = new EnergyMonitorData();
-			
+
 			this.data.socket = this.socket;
 
 			// Populate data
@@ -126,41 +125,62 @@ public class EnergyMonitorPollerSSH extends Thread {
 
 			// Print command to run
 			if (debug)
-				print("[DEBUG] \"" + cmd + "\"");
+				print("[DEBUG] Cmd: [" + cmd + "]");
 
 			// Create output stream to use
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 
 			// Execute command on remote host
 			long start = System.currentTimeMillis();
-			Process runProcess = Processes.runProcess(cmd, this.ssh, out,
-					System.err);
+			// Process runProcess = Processes.runProcess(cmd, this.ssh, out,
+			// System.err);
+
+//			System.out.println("Testing cmd without quotes:");
+//			String ls_str; 
+//			Process ls_proc = Runtime.getRuntime().exec(cmd);
+//
+//			// get its output (your input) stream
+//
+//			DataInputStream ls_in = new DataInputStream(
+//					ls_proc.getInputStream());
+//
+//			try {
+//				while ((ls_str = ls_in.readLine()) != null) {
+//					System.out.println(ls_str);
+//				}
+//			} catch (Exception e) {
+//				System.exit(0);
+//			}
+
+			Process process = Runtime.getRuntime().exec(cmd);
+
 			if (debug) {
 				print("[DEBUG] Process running. Time: " + start);
 			}
 
 			// Wait for subprocess to finish... then we can read in the buffered
 			// stream
-			runProcess.waitFor();
+			// runProcess.waitFor();
+			//process.waitFor();
 
 			// Convert output stream to an input stream we can read (via
 			// ByteArray)
-			InputStream in = new ByteArrayInputStream(out.toByteArray());
+			// InputStream in = new ByteArrayInputStream(out.toByteArray());
 
 			// Deal with result
-			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(in));
+			// BufferedReader reader = new BufferedReader(
+			// new InputStreamReader(in));
+
+			DataInputStream input = new DataInputStream(
+					process.getInputStream());
+
 			String line = null;
 
-			while ((line = reader.readLine()) != null) {
-				
+			while ((line = input.readLine()) != null) {
+				if (debug) System.out.println(line);
 				// Skip if empty string
-				if (line.equals("")) continue;
-
-				if (debug) {
-					System.out.println("Reading line...");
-					System.out.println(line);
-				}
+				if (line.equals(""))
+					continue;
 
 				// Now get number (last string on a space split line).
 				line = line.trim();
@@ -173,11 +193,11 @@ public class EnergyMonitorPollerSSH extends Thread {
 				try {
 					// Attempt to parse it
 					int value = Integer.parseInt(number);
-					
+
 					// If successful
-					if (value > 0) { 
+					if (value > 0) {
 						// end process
-						runProcess.destroy();
+						// runProcess.destroy();
 
 						// Debug information
 						if (debug) {
@@ -196,7 +216,7 @@ public class EnergyMonitorPollerSSH extends Thread {
 			}
 
 			// If no result
-			runProcess.destroy(); // end process
+			// runProcess.destroy(); // end process
 			if (debug)
 				print("[DEBUG] Finished processing. Time: "
 						+ System.currentTimeMillis());
@@ -216,7 +236,7 @@ public class EnergyMonitorPollerSSH extends Thread {
 
 	private int snmpCommand(String info) {
 		// Set up get active power snmp command
-		String cmd = "snmpwalk -v1 -c public -m \"./MIB.txt\" "
+		String cmd = "snmpwalk -v1 -c public -m ./MIB.txt "
 				+ this.PDU_IPAddress + " " + info + "." + this.socket;
 
 		// Execute snmp command
@@ -257,7 +277,7 @@ public class EnergyMonitorPollerSSH extends Thread {
 	public static void main(String[] args) {
 
 		// Create new monitor for socket and get Active Power
-		EnergyMonitor energy = new EnergyMonitor(5, false);
+		EnergyMonitor energy = new EnergyMonitor(5, true);
 		energy.start();
 	}
 }
