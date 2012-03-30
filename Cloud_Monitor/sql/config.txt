@@ -1,6 +1,3 @@
-web-app-experiment.cjuxhxkrikiq.eu-west-1.rds.amazonaws.com/RESOURCE_MONITORING
-monitor
-password
 
 // 1st line: DB Url
 // 2nd line: DB user
