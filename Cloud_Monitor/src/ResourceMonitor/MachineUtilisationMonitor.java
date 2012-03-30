@@ -1,8 +1,8 @@
 /**
  * 
  * Modified from code written by Angus Macdonald for the H20 Project, University of St Andrews.
- * 
- * Edits by James Smith
+ *
+ * Edited by James Smith - (jws7) @ St Andrews
  * 
  */
 /*
@@ -89,7 +89,6 @@ public class MachineUtilisationMonitor extends MonitorBase implements Runnable {
 				Thread.sleep(sleep_t);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-				System.exit(-1);
 			}
 		}
 	}
@@ -149,6 +148,7 @@ public class MachineUtilisationMonitor extends MonitorBase implements Runnable {
 						allFsResults.add(singleFsResult);
 				}
 			} catch (SigarException e) {
+				e.printStackTrace();
 			}
 			System.out.println("FileSystemSize:" + allFsResults.size());
 			results.addFileSystems(allFsResults);
@@ -163,17 +163,20 @@ public class MachineUtilisationMonitor extends MonitorBase implements Runnable {
 
 				for (int i = 0; i < names.length; i++) {
 					NetMonitorData singleNetResult = reportNetworkInterface(names[i]);
-					if (!singleNetResult.ip_address.equals("0.0.0.0"))
+					System.out.println(singleNetResult);
+					if (singleNetResult.ip_address != null && !singleNetResult.ip_address.equals("0.0.0.0"))
 						allNetResults.add(singleNetResult);
 				}
 			} catch (SigarException e) {
+				e.printStackTrace();
 			}
 			results.addNetworks(allNetResults);
+			System.out.println("Added all net results... ");
 
 		} catch (Exception e) {
 			e.printStackTrace(); // Better than ignoring the exception?
 		}
-
+		System.out.println("Returning data");
 		return results;
 	}
 

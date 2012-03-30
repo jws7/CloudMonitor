@@ -17,7 +17,6 @@
  */
 package Utilities;
 
-import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
@@ -34,7 +33,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
-import java.util.UUID;
 
 import DataTypes.EnergyMonitorData;
 import DataTypes.FileSystemData;
@@ -54,8 +52,8 @@ public class DatabaseConnection {
 
 	// Default Connection details
 	String databaseURL = "jdbc:mysql://";
-	String databaseUserName = "";
-	String databasePassword = "";
+	String databaseUserName = "User";
+	String databasePassword = "Passwd";
 	
 	
 	private Connection conn;
@@ -70,6 +68,7 @@ public class DatabaseConnection {
 	public DatabaseConnection(boolean debug) {
 		this();
 		this.debug = debug;
+		executeSchema();
 	}
 
 	public void executeSchema() {
@@ -142,7 +141,6 @@ public class DatabaseConnection {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.exit(0);
 		}
 
 		System.out.println("Creating a DatabaseConnection");
@@ -383,14 +381,14 @@ public class DatabaseConnection {
 	}
 
 	public void insertEnergyInfo(EnergyMonitorData energy) {
-		System.out.println("[insertEnergyInfo] Preparing SQL Statement");
+		//System.out.println("[insertEnergyInfo] Preparing SQL Statement");
 		try {
 			// Build SQL command from data
 			String cmd = "INSERT IGNORE INTO RESOURCE_MONITORING.ENERGY VALUES(NOW(), "
 					+ "?, ?, ?, ?, ?, ?);";
 
 			PreparedStatement stmt = this.conn.prepareStatement(cmd);
-			System.out.println("[insertEnergyInfo] " + stmt.toString());
+			//System.out.println("[insertEnergyInfo] " + stmt.toString());
 
 			stmt.setString(1, getMachineIDforSocket(energy.socket));
 			stmt.setInt(2, energy.socket);
@@ -537,14 +535,14 @@ public class DatabaseConnection {
 	}
 
 	private int executeUpdate(PreparedStatement stmt) {
-		System.out.println("Executing update:");
+		//System.out.println("Executing update:");
 		try {
 			// Create statement object
-			System.out.println(stmt.toString());
+			//System.out.println(stmt.toString());
 			int res = stmt.executeUpdate();
-			System.out
-					.println("[DEBUG][executeUpdate] Update completed successfully, "
-							+ res + " rows effected");
+			//System.out
+			//		.println("[DEBUG][executeUpdate] Update completed successfully, "
+			//				+ res + " rows effected");
 
 			// Disconnect statement
 			stmt.close();

@@ -1,8 +1,1 @@
-// 1st line host
-// 2nd line user
-// 3rd line password
-
-##############
-Configuration file for SNMP Host.
-Login to this host to perform snmpwalk commands
-Host must have snmp tools installed and be able to access the device on the same network
+// Depercated

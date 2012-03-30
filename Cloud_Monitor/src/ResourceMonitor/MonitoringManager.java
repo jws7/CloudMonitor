@@ -74,7 +74,15 @@ public class MonitoringManager{
 		
 		
 		MachineUtilisationMonitor mu = new MachineUtilisationMonitor(machineID);
-		new Thread(mu).start();
+		Thread th = new Thread(mu);
+		th.start();
+		try {
+			th.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 
 		//EnergyMonitor energy = new EnergyMonitor(socket, false);
 		//energy.start();

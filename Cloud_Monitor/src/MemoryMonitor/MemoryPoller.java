@@ -104,10 +104,16 @@ public class MemoryPoller extends Thread {
 			if (debug)
 				print("Relevant Line:  [" + specialLine + "]");
 			String[] array = specialLine.split(" ");
-			if (debug)
+			if (debug){
 				print("Array contains: " + array.length + " items");
+				for(String s: array){
+					print("Array item: [" + s + "]" );
+				}
+			}
 			String freeStr = array[array.length - 1];
 			String usedStr = array[array.length - 4];
+			if(usedStr.equals(""))
+				usedStr = array[array.length - 5]; // Fix a bug with some versions of free
 			if (debug)
 				print("Free: [" + freeStr + "]");
 			if (debug) print("used: [" + usedStr + "]");
