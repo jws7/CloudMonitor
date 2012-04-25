@@ -22,7 +22,7 @@ public class EnergyMonitorDataSummary {
 	// Totals
 	public int activePowerTotal;
 	public int voltage;
-	public int wattHoursTotal;
+	public int currentWattHours;
 	public float currentTotal;
 	private int totalMeasurements;
 
@@ -30,15 +30,9 @@ public class EnergyMonitorDataSummary {
 	public int activePowerAvg;
 	public float currentAvg;
 
-	private int startWattHours;
-	private boolean flag = false;
+	private int startWattHours = 0; // initalise to zero
 	public int wattHoursUsed;
-	
-	public EnergyMonitorDataSummary(){
-		this.flag = true;
-	}
-	
-	
+		
 	public void add(EnergyMonitorData e) {
 
 		// Update totals
@@ -50,14 +44,15 @@ public class EnergyMonitorDataSummary {
 		// Recalculate averages
 		recalculateAvgs();
 
-		// DEAL with watthours
-		if (flag){
+		// If we have not previously set WattHours
+		if(this.startWattHours == 0){
+			// Set it
 			this.startWattHours = e.wattHours;
-			this.flag = false;
 		}
 		
-		this.wattHoursTotal = e.wattHours;
-		recalculateWattHrs();
+		// Update current watthours
+		this.currentWattHours = e.wattHours;
+		recalculateWattHrs(); // workout wattHours used
 	}
 
 	private void recalculateAvgs() {
@@ -66,7 +61,7 @@ public class EnergyMonitorDataSummary {
 	}
 	
 	private void recalculateWattHrs() {
-		this.wattHoursUsed = this.wattHoursTotal - this.startWattHours;
+		this.wattHoursUsed = this.currentWattHours - this.startWattHours;
 	}
 
 	@Override
