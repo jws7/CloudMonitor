@@ -1,5 +1,0 @@
-Analysis of start_t: '2011-04-25 20:59:51' to: '2011-04-25 21:14:21'
-Rs1 has 0 results!
-Rs2 has 0 results!
-Rs3 has 0 results!
-Rs4 has 0 results!
