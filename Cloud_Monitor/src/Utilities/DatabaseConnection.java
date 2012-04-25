@@ -155,9 +155,9 @@ public class DatabaseConnection {
 
 		try {
 
-			System.out.println("Attempting to connect to " + databaseURL
-					+ " with user: " + databaseUserName + " and pass.. "
-					+ databasePassword);
+			System.out.println("Attempting to connect to [" + databaseURL
+					+ "] with user: [" + databaseUserName + "] and password: ["
+					+ databasePassword + "]");
 
 			conn = DriverManager.getConnection(databaseURL, databaseUserName,
 					databasePassword);
@@ -1122,7 +1122,7 @@ public class DatabaseConnection {
 			Statement stmt = conn.createStatement();
 			// String query = "SELECT * FROM SYS_INFO"
 			// + " WHERE primary_ip = '" + ipAddress + "';";
-			String query = "SELECT * FROM `resource_monitoring`.`sys_info`"
+			String query = "SELECT * FROM SYS_INFO"
 					+ " WHERE primary_ip = '" + ipAddress + "';";
 
 			// System.out.println("[DatabaseConnection] " + query);
