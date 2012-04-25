@@ -457,7 +457,7 @@ public class DatabaseConnection {
 			stmt.setString(2, data.startTime());
 			stmt.setString(3, data.finishTime());
 			stmt.setString(4, data.benchmarkURL);
-			stmt.setString(5, data.output);
+			stmt.setString(5, data.output.toString());
 
 			// Now execute
 			executeUpdate(cmd);

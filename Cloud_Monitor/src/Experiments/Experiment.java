@@ -52,7 +52,15 @@ public class Experiment {
 	public String benchmarkURL;
 	
 	// Output
-	public String output;
+	public StringBuffer output;
+
+	// Machine executed on
+	public String machine_id;
+	
+	public Experiment(String string) {
+		this.command = string;
+		output = new StringBuffer();
+	}
 	
 	private static SimpleDateFormat sdf = new SimpleDateFormat(
 	"yyyy-MM-dd HH:mm:ss"); // 2010-08-04 13:51:14.539 //AKA SQL Format
