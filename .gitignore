@@ -1,2 +1,6 @@
 *.txt
 *.class
+.DS_Store
+Cloud_Monitor/bin/
+Cloud_Monitor/results/
+Cloud_Monitor/config/
