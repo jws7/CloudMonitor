@@ -31,20 +31,13 @@ import DataTypes.MachineUtilisationData;
  */
 public class Experiment {
 
-	public Experiment(String string) {
-		this.command = string;
-	}
-
-	// Command to run
-	public String command;
-	
-	// CPU Guv
-	public String cpu_guv;
-	
-	//Only populted when display is needed then discarded (save memory)
+	// Can be used to associate data with each experiment
 	public ArrayList<MachineUtilisationData> resource_data;
 	public ArrayList<EnergyMonitorData> energy_data;
 	
+	// Command to run
+	public String command;
+		
 	// Start & Finish times
 	public Date start;
 	public Date finish;
@@ -73,5 +66,13 @@ public class Experiment {
 	public String finishTime() {
 		// Return formated date
         return sdf.format(finish);
+	}
+	
+	@Override
+	public String toString() {
+		return "Experiment [command = ["
+				+ this.command + "], start=" + this.startTime()
+				+ ", end=" + this.finishTime() + ", benchmarkURL="
+				+ benchmarkURL;
 	}
 }
