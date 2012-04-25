@@ -50,6 +50,9 @@ public class Experiment {
 	// Machine executed on
 	public String machine_id;
 	
+	// Phoronix Average result (usually number)
+	public String result;
+	
 	public Experiment(String string) {
 		this.command = string;
 		output = new StringBuffer();
@@ -73,6 +76,6 @@ public class Experiment {
 		return "Experiment [command = ["
 				+ this.command + "], start=" + this.startTime()
 				+ ", end=" + this.finishTime() + ", benchmarkURL="
-				+ benchmarkURL;
+				+ benchmarkURL + ", result=" +result + "]";
 	}
 }
