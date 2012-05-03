@@ -46,7 +46,7 @@ import uk.ac.standrews.cs.nds.util.ErrorHandling;
 /**
  * 
  * @author james.w.smith@st-andrews.ac.uk
- *
+ * 
  */
 public class DatabaseConnection {
 
@@ -54,8 +54,7 @@ public class DatabaseConnection {
 	String databaseURL = "jdbc:mysql://";
 	String databaseUserName = "User";
 	String databasePassword = "Passwd";
-	
-	
+
 	private Connection conn;
 	private boolean debug;
 
@@ -78,9 +77,8 @@ public class DatabaseConnection {
 
 			// Open the file that is the first
 			// command line parameter
-			FileInputStream fstream = new FileInputStream(
-					"sql" + File.separator
-							+ "resource_monitoring.sql");
+			FileInputStream fstream = new FileInputStream("sql"
+					+ File.separator + "resource_monitoring.sql");
 
 			// Get the object of DataInputStream
 			DataInputStream in = new DataInputStream(fstream);
@@ -129,8 +127,7 @@ public class DatabaseConnection {
 
 		// Open config file
 		try {
-			File config = new File("sql" + File.separator
-					+ "config.txt");
+			File config = new File("sql" + File.separator + "config.txt");
 			System.out.println("Attempting to open config file: "
 					+ config.getCanonicalPath());
 			Scanner sc = new Scanner(config);
@@ -144,7 +141,6 @@ public class DatabaseConnection {
 		}
 
 		System.out.println("Creating a DatabaseConnection");
-
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver"); // Load driver
@@ -381,14 +377,14 @@ public class DatabaseConnection {
 	}
 
 	public void insertEnergyInfo(EnergyMonitorData energy) {
-		//System.out.println("[insertEnergyInfo] Preparing SQL Statement");
+		// System.out.println("[insertEnergyInfo] Preparing SQL Statement");
 		try {
 			// Build SQL command from data
 			String cmd = "INSERT IGNORE INTO RESOURCE_MONITORING.ENERGY VALUES(NOW(), "
 					+ "?, ?, ?, ?, ?, ?);";
 
 			PreparedStatement stmt = this.conn.prepareStatement(cmd);
-			//System.out.println("[insertEnergyInfo] " + stmt.toString());
+			// System.out.println("[insertEnergyInfo] " + stmt.toString());
 
 			stmt.setString(1, getMachineIDforSocket(energy.socket));
 			stmt.setInt(2, energy.socket);
@@ -443,21 +439,27 @@ public class DatabaseConnection {
 	}
 
 	public void insertExperimentInfo(Experiment data) {
-		System.out.println("[insertExperimentInfo] Preparign SQL Statement");
+		System.out.println("[insertExperimentInfo] Preparing SQL Statement");
 
 		try {
 			// Build SQL command from data
-			String cmd = "INSERT IGNORE INTO RESOURCE_MONITORING.EXPERIMENTS VALUES('"
-					+ null + "', ?, ?, ?, ?, ?);";
+			String cmd = "INSERT IGNORE INTO RESOURCE_MONITORING.EXPERIMENTS VALUES"
+					+ "(null, \""
+					+ data.command
+					+ "\", \""
+					+ data.startTime()
+					+ "\", \""
+					+ data.finishTime()
+					+ "\", \""
+					+ data.benchmarkURL
+					+ "\", null, \""
+					+ data.result + "\");";
 
 			PreparedStatement stmt = this.conn.prepareStatement(cmd);
-			System.out.println("[insertSystemInfo] " + stmt.toString());
 
-			stmt.setString(1, data.command);
-			stmt.setString(2, data.startTime());
-			stmt.setString(3, data.finishTime());
-			stmt.setString(4, data.benchmarkURL);
-			stmt.setString(5, data.output.toString());
+		
+
+			System.out.println("[insertSystemInfo] " + stmt.toString());
 
 			// Now execute
 			executeUpdate(cmd);
