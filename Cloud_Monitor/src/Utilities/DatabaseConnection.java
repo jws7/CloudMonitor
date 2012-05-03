@@ -537,14 +537,14 @@ public class DatabaseConnection {
 	}
 
 	private int executeUpdate(PreparedStatement stmt) {
-		//System.out.println("Executing update:");
+		// System.out.println("Executing update:");
 		try {
 			// Create statement object
-			//System.out.println(stmt.toString());
+			// System.out.println(stmt.toString());
 			int res = stmt.executeUpdate();
-			//System.out
-			//		.println("[DEBUG][executeUpdate] Update completed successfully, "
-			//				+ res + " rows effected");
+			// System.out
+			// .println("[DEBUG][executeUpdate] Update completed successfully, "
+			// + res + " rows effected");
 
 			// Disconnect statement
 			stmt.close();
@@ -1124,8 +1124,8 @@ public class DatabaseConnection {
 			Statement stmt = conn.createStatement();
 			// String query = "SELECT * FROM SYS_INFO"
 			// + " WHERE primary_ip = '" + ipAddress + "';";
-			String query = "SELECT * FROM SYS_INFO"
-					+ " WHERE primary_ip = '" + ipAddress + "';";
+			String query = "SELECT * FROM SYS_INFO" + " WHERE primary_ip = '"
+					+ ipAddress + "';";
 
 			// System.out.println("[DatabaseConnection] " + query);
 			ResultSet rs = stmt.executeQuery(query);
