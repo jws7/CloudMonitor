@@ -171,7 +171,7 @@ public class ExperimentRunner {
 			// Convert output stream to an input stream we can read (via
 			// ByteArray)
 			InputStream in = new ByteArrayInputStream(out.toByteArray());
-
+			
 			// Deal with result
 			BufferedReader reader = new BufferedReader(
 					new InputStreamReader(in));
@@ -193,9 +193,9 @@ public class ExperimentRunner {
 				}
 				
 				if(exp.output == null)
-					exp.output = line + "~"; //New line character
+					exp.output.append(line + "~"); //New line character
 				else
-					exp.output += line + "~";
+					exp.output.append(line + "~");
 			}
 
 			runProcess.destroy(); // end process
