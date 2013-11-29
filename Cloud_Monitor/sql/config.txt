@@ -1,6 +1,0 @@
-138.251.198.26:3306
-root
-TestServer20!2
-// 1st line: DB Url
-// 2nd line: DB user
-// 3rd line: DB password
