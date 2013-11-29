@@ -109,7 +109,7 @@ public class EnergyMonitor extends Thread {
 		int socket = Integer.parseInt(args[0]);
 		
 		// Create new monitor for socket and get Active Power
-		EnergyMonitor energy = new EnergyMonitor(socket, false);
+		EnergyMonitor energy = new EnergyMonitor(socket, true);
 		energy.start();
 	}
 }
